@@ -1,0 +1,7 @@
+# подготовка фото для обложки: photo/run_seg.py, photo/cover_photo.py (ставить в отдельный venv)
+rembg[cpu]==2.0.85
+onnxruntime==1.30.0
+numpy==2.5.3
+scipy==1.18.1
+PyMatting==1.1.16
+pillow==12.3.0
