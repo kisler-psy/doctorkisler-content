@@ -127,4 +127,86 @@ function stakesGrow() {
     <path d="M248 60H292V104" />`);
 }
 
-module.exports = { phoneDown, moneyAway, calendarDebt, sleeplessClock, scoreboard, chaseLoop, stakesGrow };
+
+// ---------- «Дофамин, часть 2» ----------
+// Курьер уже в пути: телефон с картой, пунктирный маршрут к метке
+function courierTracking() {
+  return svg(`
+    ${disc(214, 200)}
+    <rect x="112" y="40" width="176" height="320" rx="30" fill="${CREAM}"/>
+    <path d="M174 60H226" stroke-width="4"/>
+    <rect x="150" y="248" width="34" height="30" rx="6" fill="${CREAM}" stroke-width="4"/>
+    <path d="M167 248v-8" stroke-width="4"/>
+    <path d="M184 262C224 262 214 200 244 186" stroke-width="5" stroke-dasharray="2 14"/>
+    <path d="M246 96c-24 0-40 18-40 38 0 28 40 62 40 62s40-34 40-62c0-20-16-38-40-38Z" fill="${ACCENT}" stroke-width="5"/>
+    <circle cx="246" cy="134" r="12" fill="${CREAM}" stroke-width="4"/>
+    <path d="M142 318H258" stroke-width="5"/>
+    <path d="M142 318H214" stroke="${ACCENT}" stroke-width="9"/>`);
+}
+
+// Три точки в мессенджере: облачко «печатает…»
+function typingDots() {
+  return svg(`
+    ${disc(200, 200)}
+    <rect x="70" y="92" width="196" height="96" rx="40" fill="${CREAM}" stroke-width="4"/>
+    <path d="M104 120H226M104 154H186" stroke-width="4"/>
+    <path d="M150 226H306a40 40 0 0 1 40 40v8a40 40 0 0 1-40 40H196l-34 26v-26h-12a40 40 0 0 1-40-40v-8a40 40 0 0 1 40-40Z" fill="${CREAM}"/>
+    <circle cx="180" cy="270" r="13" fill="${INK}" stroke="none"/>
+    <circle cx="228" cy="270" r="13" fill="${ACCENT}" stroke="none"/>
+    <circle cx="276" cy="270" r="13" fill="${INK}" stroke="none"/>`);
+}
+
+// Щелчок крышки: стакан со льдом и отлетающая крышка
+function bottleIce() {
+  return svg(`
+    ${disc(200, 210)}
+    <path d="M110 150L130 344a14 14 0 0 0 14 12h112a14 14 0 0 0 14-12L290 150Z" fill="${CREAM}"/>
+    <path d="M118 226H282" stroke-width="4"/>
+    <rect x="146" y="238" width="54" height="54" rx="10" fill="${CREAM}" stroke-width="4" transform="rotate(-12 173 265)"/>
+    <rect x="206" y="256" width="52" height="52" rx="10" fill="${CREAM}" stroke-width="4" transform="rotate(10 232 282)"/>
+    <rect x="172" y="300" width="46" height="40" rx="9" fill="${CREAM}" stroke-width="4"/>
+    <g transform="rotate(24 300 76)">
+      <path d="M266 62h68v20a8 8 0 0 1-8 8h-52a8 8 0 0 1-8-8Z" fill="${ACCENT}" stroke-width="4"/>
+      <path d="M276 90v8M290 90v8M304 90v8M318 90v8" stroke-width="3"/>
+    </g>
+    <path d="M236 70l-20-14M248 42l-8-22M272 128l-10 16" stroke-width="4"/>`);
+}
+
+// Экран ставки грузится: телефон с кругом загрузки
+function betLoading() {
+  return svg(`
+    ${disc(200, 200)}
+    <rect x="112" y="40" width="176" height="320" rx="30" fill="${CREAM}"/>
+    <path d="M174 60H226" stroke-width="4"/>
+    <circle cx="200" cy="168" r="48" stroke-width="6" stroke-opacity="0.18"/>
+    <path d="M200 120a48 48 0 0 1 48 48" stroke="${ACCENT}" stroke-width="10"/>
+    <rect x="140" y="250" width="120" height="34" rx="12" fill="${INK}" stroke="none"/>
+    <path d="M144 310H256M144 332H220" stroke-width="4"/>`);
+}
+
+// Красная точка на иконке: приложение с непрочитанным уведомлением
+function notificationBadge() {
+  return svg(`
+    ${disc(200, 210)}
+    <rect x="92" y="112" width="200" height="200" rx="48" fill="${CREAM}"/>
+    <path d="M192 166c-30 0-48 22-48 50v34l-14 18h124l-14-18v-34c0-28-18-50-48-50Z" fill="${CREAM}" stroke-width="5"/>
+    <path d="M176 280a16 16 0 0 0 32 0" stroke-width="5"/>
+    <circle cx="288" cy="116" r="40" fill="#B5523B" stroke-width="5"/>
+    <text x="288" y="138" text-anchor="middle" font-family="OswaldFS" font-weight="700" font-size="60" fill="${CREAM}" stroke="none">1</text>
+    <path d="M332 72l16-16M342 104h22M300 52l6-20" stroke-width="4"/>`);
+}
+
+// Удовольствие тускнеет, тяга растёт: две линии расходятся
+function cravingGrows() {
+  return svg(`
+    ${disc(200, 200)}
+    <path d="M60 60V340H346" stroke-width="5"/>
+    <path d="M84 120C150 130 220 200 330 262" stroke-width="5" stroke-dasharray="4 14"/>
+    <path d="M84 300C170 290 230 220 316 96" stroke="${ACCENT}" stroke-width="10"/>
+    <path d="M280 98L318 92L320 132" stroke="${ACCENT}" stroke-width="10"/>`);
+}
+
+module.exports = {
+  phoneDown, moneyAway, calendarDebt, sleeplessClock, scoreboard, chaseLoop, stakesGrow,
+  courierTracking, typingDots, bottleIce, betLoading, notificationBadge, cravingGrows,
+};
