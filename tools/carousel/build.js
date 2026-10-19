@@ -113,6 +113,22 @@ h1{margin:0;font-family:'OswaldFS';font-weight:700;text-transform:uppercase;colo
 .sign .text{top:176px}
 .sign .ill{right:80px;bottom:206px}
 
+/* крупная вёрстка (big: true): большой номер на фоне, рисунок по центру, тёмные слайды (dark: true) */
+.sign.big .num{position:absolute;right:80px;top:20px;font:700 150px/1 'OswaldFS';color:${C.accent};letter-spacing:.01em}
+.sign.big .ill{right:auto;left:50%;transform:translateX(-50%);bottom:186px}
+.sign.big .text{top:188px}
+.sign.big .ill::before{content:'';position:absolute;inset:-14px;border-radius:50%;background:#FBF5EE;box-shadow:0 26px 50px rgba(90,60,30,.18), inset 0 0 0 10px rgba(176,138,90,.18)}
+.sign.big .ill svg{position:relative}
+.sign .hl{background:linear-gradient(transparent 58%, rgba(176,138,90,.42) 58%, rgba(176,138,90,.42) 92%, transparent 92%);color:${C.ink}}
+.sign.dark{background:radial-gradient(120% 95% at 12% 6%, #5A4129 0%, #45311F 55%, #33241A 100%)}
+.sign.dark h1{color:${PLATE_TEXT}}
+.sign.dark .body{color:#E6D3BE}
+.sign.dark .hl{color:${PLATE_TEXT};background:linear-gradient(transparent 58%, rgba(227,181,131,.45) 58%, rgba(227,181,131,.45) 92%, transparent 92%)}
+.sign.dark .num{color:#E3B583}
+.sign.dark .counter,.sign.dark .arrow{border-color:${PLATE_TEXT};color:${PLATE_TEXT}}
+.sign.dark .handle{color:${PLATE_TEXT}}
+.sign.dark .ill::before{background:#F1E4D4;box-shadow:0 30px 60px rgba(0,0,0,.38), inset 0 0 0 10px rgba(227,181,131,.35)}
+
 /* финал */
 .final .content{position:absolute;left:80px;right:80px;top:170px;bottom:190px;display:flex;flex-direction:column;justify-content:center}
 .final h1{font-size:96px;line-height:1.2}
@@ -136,7 +152,7 @@ function footer(i, s) {
     ? `<div class="note">${t(s.note).replace('DSM-5', '<span class="nowrap">DSM-5</span>')}</div>`
     : '<div class="note"></div>';
   const light = COVER_IMG ? PLATE_TEXT : C.cream;
-  const arrow = last ? '' : `<div class="arrow">${arrowSvg(onDark ? light : C.ink)}</div>`;
+  const arrow = last ? '' : `<div class="arrow">${arrowSvg(onDark ? light : s.dark ? PLATE_TEXT : C.ink)}</div>`;
   if (onDark && COVER_IMG) {
     const mark = `<svg width="22" height="28" viewBox="0 0 22 28" fill="none" stroke="${light}" stroke-width="2" stroke-linejoin="round"><path d="M2 2H20V26L11 19.5L2 26Z"/></svg>`;
     return `<div class="footer"><div class="note">${mark}<span>${t(s.note)}</span></div><div class="handle">@doctorkisler</div>${arrow}</div>`;
@@ -154,19 +170,24 @@ function slideHtml(i) {
     inner = `<div class="head"><h1>${title}</h1><div class="rule"></div><div class="sub">${t(s.subtitle)}</div></div>`;
   } else if (s.type === 'sign') {
     if (s.ill && !ILL[s.ill]) throw new Error(`Нет рисунка «${s.ill}» в illustrations.js`);
-    const ill = s.ill ? `<div class="ill">${ILL[s.ill]().replace(/width="400" height="400"/, 'width="440" height="440"')}</div>` : '';
+    const size = s.illSize || (s.big ? 500 : 440);
+    const ill = s.ill ? `<div class="ill">${ILL[s.ill]().replace(/width="400" height="400"/, `width="${size}" height="${size}"`)}</div>` : '';
     // breakAfter: строки рвутся только после указанных слов, остальные пробелы неразрывные
     const body = s.breakAfter
       ? s.breakAfter.reduce((acc, w) => acc.replace(`${w} `, `${w}\n`), s.text).split('\n').map((seg) => esc(seg.replace(/ /g, NB))).join('<br>')
       : tb(s.text, s.keep);
-    inner = `${ill}<div class="text"><h1>${t(s.title)}</h1><div class="rule"></div><p class="body">${body}</p></div>`;
+    const hl = s.hl ? body.replace(tb(s.hl), `<span class="hl">${tb(s.hl)}</span>`) : body;
+    const m = s.big && /^(\d+)\./.exec(s.title);
+    const num = m ? `<div class="num">${m[1].padStart(2, '0')}</div>` : '';
+    const title = m ? s.title.replace(/^\d+\.\s*/, '') : s.title;
+    inner = `${num}${ill}<div class="text"><h1>${t(title)}</h1><div class="rule"></div><p class="body">${hl}</p></div>`;
   } else {
     const cta = t(s.cta).replace(s.keyword, `<span class="kw">${s.keyword}</span>`);
     const avatar = AVATAR_IMG ? `<img src="data:image/jpeg;base64,${fs.readFileSync(AVATAR_IMG).toString('base64')}" alt="">` : '';
     inner = `<div class="content"><h1>${t(s.title)}</h1><div class="rule"></div><p class="body">${tb(s.text)}</p><div class="cta">${avatar}<span>${cta}</span></div></div>`;
   }
   return `<!doctype html><html lang="ru"><head><meta charset="utf-8"><style>${CSS}</style></head>` +
-    `<body><div class="slide ${s.type}${s.type === 'cover' && COVER_IMG ? ' photo' : ''}">${counter}${inner}${footer(i, s)}</div></body></html>`;
+    `<body><div class="slide ${s.type}${s.type === 'cover' && COVER_IMG ? ' photo' : ''}${s.big ? ' big' : ''}${s.dark ? ' dark' : ''}">${counter}${inner}${footer(i, s)}</div></body></html>`;
 }
 
 // ---------- проверка шрифтов через DevTools: какими шрифтами реально отрисован каждый текстовый узел ----------
@@ -219,6 +240,7 @@ async function fontReport(page) {
       return {
         content: box('h1, .rule, .body, .sub, .cta'), footer: box('.footer'),
         ill: (() => { const e = document.querySelector('.ill svg'); if (!e) return null; const r = e.getBoundingClientRect(); return { top: r.top, bottom: r.bottom, left: r.left, right: r.right }; })(),
+        num: (() => { const e = document.querySelector('.num'); if (!e) return null; const r = e.getBoundingClientRect(); return { top: r.top, bottom: r.bottom, left: r.left, right: r.right }; })(),
         textRects: [...document.querySelectorAll('h1, .body')].flatMap((e) => { const g = document.createRange(); g.selectNodeContents(e); return [...g.getClientRects()].map((r) => ({ top: r.top, bottom: r.bottom, left: r.left, right: r.right })); }),
         h1Lines: lines('h1'), bodyLines: lines('.body'),
       };
@@ -226,6 +248,7 @@ async function fontReport(page) {
     const problems = [];
     if (geo.content.left < 80 || geo.content.right > W - 80) problems.push('текст выходит за поля');
     if (geo.content.bottom > geo.footer.top - 40) problems.push('текст близко к подвалу');
+    if (geo.num && geo.textRects.some((r) => r.left < geo.num.right && r.right > geo.num.left && r.top < geo.num.bottom - 20 && r.bottom > geo.num.top)) problems.push('номер наезжает на текст');
     if (geo.ill) {
       const hit = geo.textRects.some((r) => r.left < geo.ill.right && r.right > geo.ill.left && r.top < geo.ill.bottom && r.bottom > geo.ill.top);
       if (hit) problems.push('текст наезжает на рисунок');
