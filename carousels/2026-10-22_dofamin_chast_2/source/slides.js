@@ -1,11 +1,11 @@
-// Тексты карусели «Дофамин, часть 2». Сборка: npm --prefix tools/carousel run build -- carousels/2026-10-22_dofamin_chast_2
+// Тексты карусели «О дофамине». Сборка: npm --prefix tools/carousel run build -- carousels/2026-10-22_dofamin_chast_2
 // Поля слайдов описаны в tools/carousel/README.md.
 module.exports = [
   {
     type: 'cover',
     title: 'Мозг радуется заранее',
     titleBreakAfter: 'радуется',
-    subtitle: 'Дофамин, часть 2',
+    subtitle: 'О дофамине',
     note: 'Сохраните, чтобы замечать это в себе',
   },
   { type: 'sign', ill: 'courierTracking', title: '1. «Курьер уже в пути»', text: 'Еда ещё не приехала, а настроение уже поднялось.', big: true, hl: 'настроение уже поднялось' },
