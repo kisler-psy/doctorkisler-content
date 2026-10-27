@@ -1,0 +1,52 @@
+{
+  "locale": "ru",
+  "version": 1,
+  "status": "draft_v1_pending_clinical_review",
+  "packs": [
+    {
+      "id": "partner",
+      "title": "Партнёр",
+      "lead": "Разговоры, которые пары откладывают месяцами.",
+      "scenarios": [
+        "partner_chores",
+        "partner_money",
+        "partner_listen",
+        "partner_inlaws",
+        "partner_grudge",
+        "partner_time",
+        "partner_jealousy",
+        "partner_therapy"
+      ]
+    },
+    {
+      "id": "teen",
+      "title": "Подросток",
+      "lead": "Разговоры с подростком, которые обычно заканчиваются криком.",
+      "scenarios": [
+        "teen_phone",
+        "teen_school",
+        "teen_lie",
+        "teen_rudeness",
+        "teen_friends",
+        "teen_late",
+        "teen_misunderstood",
+        "teen_chores"
+      ]
+    },
+    {
+      "id": "work",
+      "title": "Работа",
+      "lead": "Разговоры, перед которыми откладывают визит в кабинет.",
+      "scenarios": [
+        "work_raise",
+        "work_overtime",
+        "work_feedback",
+        "work_colleague",
+        "work_shouting",
+        "work_fire",
+        "work_resign",
+        "work_remote"
+      ]
+    }
+  ]
+}
